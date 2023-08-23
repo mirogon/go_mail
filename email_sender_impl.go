@@ -1,14 +1,19 @@
 package mail
 
 import (
-	"fmt"
+	"errors"
 	"net/smtp"
+
+	util "github.com/mirogon/go_util"
 )
 
 type GmailEmailSender struct {
 }
 
 func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, message string) error {
+	if !util.HasInternet() {
+		return errors.New("No internet!")
+	}
 	from := "marcelroemersoftware@gmail.com"
 	password := "aevmetmmhkprbukv"
 	to := []string{
@@ -25,7 +30,6 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 	if err != nil {
 		return err
 	}
-	fmt.Println("Email sent!")
 	return nil
 }
 
