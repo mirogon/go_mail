@@ -1,6 +1,7 @@
 package mail
 
 import (
+	"encoding/json"
 	"errors"
 	"regexp"
 	"strings"
@@ -9,7 +10,15 @@ import (
 )
 
 type Email struct {
-	email string `json:"email"`
+	email string
+}
+
+func (e Email) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Email string `json:"email"`
+	}{
+		Email: e.email,
+	})
 }
 
 func (email Email) Str() string {
