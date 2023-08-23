@@ -14,8 +14,8 @@ type Email struct {
 	email string
 }
 
-func (e *Email) MarshalJSON() ([]byte, error) {
-	emailField := reflect.ValueOf(e).Elem().FieldByName("email")
+func (e Email) MarshalJSON() ([]byte, error) {
+	emailField := reflect.ValueOf(&e).Elem().FieldByName("email")
 	return json.Marshal(&struct {
 		Email string `json:"email"`
 	}{
