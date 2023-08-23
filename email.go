@@ -9,7 +9,7 @@ import (
 )
 
 type Email struct {
-	email string
+	email string `json:"email"`
 }
 
 func (email Email) Str() string {
