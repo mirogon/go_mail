@@ -1,9 +1,7 @@
 package mail
 
 import (
-	"encoding/json"
 	"errors"
-	"reflect"
 	"regexp"
 	"strings"
 
@@ -12,15 +10,6 @@ import (
 
 type Email struct {
 	email string
-}
-
-func (e Email) MarshalJSON() ([]byte, error) {
-	emailField := reflect.ValueOf(&e).Elem().FieldByName("email")
-	return json.Marshal(&struct {
-		Email string `json:"email"`
-	}{
-		Email: emailField.String(),
-	})
 }
 
 func (email Email) Str() string {

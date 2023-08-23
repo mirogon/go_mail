@@ -1,17 +1,10 @@
 package mail_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	mail "github.com/mirogon/go_mail"
 )
-
-func TestMarshalEmail(t *testing.T) {
-	mail, _ := mail.CreateEmail("test@example.com")
-	json, _ := json.Marshal(mail)
-	t.Error(string(json))
-}
 
 func TestValidEmail(t *testing.T) {
 	email, err := mail.CreateEmail("m1smr@hotmail.com")
