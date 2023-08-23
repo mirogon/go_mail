@@ -13,7 +13,7 @@ type Email struct {
 	email string
 }
 
-func (e Email) MarshalJSON() ([]byte, error) {
+func (e *Email) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Email string `json:"email"`
 	}{
