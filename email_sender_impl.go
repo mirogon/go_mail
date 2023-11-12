@@ -25,7 +25,7 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
-	msg := "Subject: " + subject + "\r\n\r\n" + message
+	msg := "Subject: " + subject + "\r\n" + "Content-Type: text/html; charset=UTF-8" + "\r\n\r\n" + message
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(msg))
 	if err != nil {
 		return err
