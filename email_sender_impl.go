@@ -21,7 +21,7 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 		return errors.New("No internet!")
 	}
 
-	from := /*from_ + " <" + */ emailSender.From //+ ">"
+	from := from_ /*+ " <" +  emailSender.From + ">"*/
 	password := emailSender.Pw
 	to := []string{
 		receiver,
