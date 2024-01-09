@@ -21,7 +21,8 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 		return errors.New("No internet!")
 	}
 
-	from := from_ /*+ " <" +  emailSender.From + ">"*/
+	fromHeader := from_ + " <" + emailSender.From + ">"
+
 	password := emailSender.Pw
 	to := []string{
 		receiver,
@@ -30,10 +31,10 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	auth := smtp.PlainAuth("", emailSender.From, password, smtpHost)
 
-	msg := "Subject: " + subject + "\r\n" + "Content-Type: text/html; charset=UTF-8" + "\r\n\r\n" + message
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(msg))
+	msg := "Subject: " + subject + "\r\n" + "From: " + fromHeader + "\r\n" + "Content-Type: text/html; charset=UTF-8" + "\r\n\r\n" + message
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, emailSender.From, to, []byte(msg))
 	if err != nil {
 		return err
 	}
