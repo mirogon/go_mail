@@ -16,11 +16,12 @@ func CreateGmailEmailSender(from string, pw string) GmailEmailSender {
 	return GmailEmailSender{From: from, Pw: pw}
 }
 
-func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, message string) error {
+func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, message string, from_ string) error {
 	if !util.HasInternet() {
 		return errors.New("No internet!")
 	}
-	from := emailSender.From
+
+	from := from_ + " <" + emailSender.From + ">"
 	password := emailSender.Pw
 	to := []string{
 		receiver,
