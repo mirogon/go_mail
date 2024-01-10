@@ -8,20 +8,21 @@ import (
 )
 
 type GmailEmailSender struct {
-	From string
-	Pw   string
+	From       string
+	Pw         string
+	SenderName string
 }
 
-func CreateGmailEmailSender(from string, pw string) GmailEmailSender {
-	return GmailEmailSender{From: from, Pw: pw}
+func CreateGmailEmailSender(from string, pw string, senderName string) GmailEmailSender {
+	return GmailEmailSender{From: from, Pw: pw, SenderName: senderName}
 }
 
-func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, message string, from_ string) error {
+func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, message string) error {
 	if !util.HasInternet() {
 		return errors.New("No internet!")
 	}
 
-	fromHeader := from_ + " <" + emailSender.From + ">"
+	fromHeader := emailSender.SenderName + " <" + emailSender.From + ">"
 
 	password := emailSender.Pw
 	to := []string{
