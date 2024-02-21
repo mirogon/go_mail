@@ -44,12 +44,13 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 
 type BrevoEmailSender struct {
 	From       string
+	Login      string
 	Pw         string
 	SenderName string
 }
 
-func CreateBrevoEmailSender(from string, pw string, senderName string) BrevoEmailSender {
-	return BrevoEmailSender{From: from, Pw: pw, SenderName: senderName}
+func CreateBrevoEmailSender(from string, login string, pw string, senderName string) BrevoEmailSender {
+	return BrevoEmailSender{From: from, Login: login, Pw: pw, SenderName: senderName}
 }
 
 func (emailSender BrevoEmailSender) SendEmail(receiver string, subject string, message string) error {
@@ -67,7 +68,7 @@ func (emailSender BrevoEmailSender) SendEmail(receiver string, subject string, m
 	smtpHost := "smtp-relay.brevo.com"
 	smtpPort := "587"
 
-	auth := smtp.PlainAuth("", emailSender.From, password, smtpHost)
+	auth := smtp.PlainAuth("", emailSender.Login, password, smtpHost)
 
 	msg := "Subject: " + subject + "\r\n" + "From: " + fromHeader + "\r\n" + "Content-Type: text/html; charset=UTF-8" + "\r\n\r\n" + message
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, emailSender.From, to, []byte(msg))
