@@ -42,6 +42,37 @@ func (emailSender GmailEmailSender) SendEmail(receiver string, subject string, m
 	return nil
 }
 
-func CreateEmailSender() GmailEmailSender {
-	return GmailEmailSender{}
+type BrevoEmailSender struct {
+	From       string
+	Pw         string
+	SenderName string
+}
+
+func CreateBrevoEmailSender(from string, pw string, senderName string) BrevoEmailSender {
+	return BrevoEmailSender{From: from, Pw: pw, SenderName: senderName}
+}
+
+func (emailSender BrevoEmailSender) SendEmail(receiver string, subject string, message string) error {
+	if !util.HasInternet() {
+		return errors.New("No internet!")
+	}
+
+	fromHeader := emailSender.SenderName + " <" + emailSender.From + ">"
+
+	password := emailSender.Pw
+	to := []string{
+		receiver,
+	}
+
+	smtpHost := "smtp-relay.brevo.com"
+	smtpPort := "587"
+
+	auth := smtp.PlainAuth("", emailSender.From, password, smtpHost)
+
+	msg := "Subject: " + subject + "\r\n" + "From: " + fromHeader + "\r\n" + "Content-Type: text/html; charset=UTF-8" + "\r\n\r\n" + message
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, emailSender.From, to, []byte(msg))
+	if err != nil {
+		return err
+	}
+	return nil
 }
